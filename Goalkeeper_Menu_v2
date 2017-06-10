@@ -1,0 +1,101 @@
+import pygame, random
+from tkinter import *
+
+##################################### FLAGS #####################################
+
+menu = True
+
+################################### CONSTANTS ###################################
+
+### Colors ###
+
+white = (0, 0, 0)
+
+##################################### SCREEN ####################################
+
+pygame.init()
+
+ScreenWidth = 1000
+ScreenHeight = 650
+
+Screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+pygame.display.set_caption("Goalkeeper")
+Clock = pygame.time.Clock()
+
+##################################### IMAGES ####################################
+
+Menu_Background = pygame.image.load("Menu_Background.png")
+Menu_Background = pygame.transform.scale(Menu_Background, (ScreenWidth, ScreenHeight))
+About_Background = pygame.image.load("About_Background.png")
+About_Background = pygame.transform.scale(About_Background, (ScreenWidth, ScreenHeight))
+Start_Button_Off = pygame.image.load("Start_Button_Off.png")
+#Start_Button_Off = pygame.transform.scale(Start_Button_Off, (200, 65))
+Start_Button_On = pygame.image.load("Start_Button_On.png")
+#Start_Button_On = pygame.transform.scale(Start_Button_On, (200, 65))
+About_Button_Off = pygame.image.load("About_Button_Off.png")
+About_Button_On = pygame.image.load("About_Button_On.png")
+Menu_Button_Off = pygame.image.load("Menu_Button_Off.png")
+Menu_Button_On = pygame.image.load("Menu_Button_On.png")
+
+###################################### MENU #####################################
+
+def Menu():
+    global menu, about
+    while menu:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu = False
+                pygame.quit()
+
+        Screen.blit(Menu_Background, (0, 0))
+        ### Buttons ###
+        if 40 < Mouse[0] < 40 + Start_Button_Off.get_rect().width and 75 < Mouse[1] < 75 + Start_Button_Off.get_rect().height:
+            Screen.blit(Start_Button_On, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+        elif 40 < Mouse[0] < 40 + About_Button_Off.get_rect().width and 175 < Mouse[1] <  175 + About_Button_Off.get_rect().height:
+            Screen.blit(About_Button_On, (40, 175))
+            Screen.blit(Start_Button_Off, (40, 75))
+            if Click[0] == 1:
+                menu = False
+                about = True
+                About()
+        else:
+            Screen.blit(Start_Button_Off, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+##################################### ABOUT #####################################
+
+def About():
+    global menu, about
+    while about:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                about = False
+                pygame.quit()
+                
+        Screen.blit(About_Background, (0, 0))
+        ### Back to Menu Button ###
+        if 800 < Mouse[0] < 800 + Menu_Button_Off.get_rect().width and 575 < Mouse[1] < 575 + Menu_Button_Off.get_rect().height:
+            Screen.blit(Menu_Button_On, (775, 575))
+            if Click[0] == 1:
+                menu = True
+                about = False
+                Menu()
+        else:
+            Screen.blit(Menu_Button_Off, (775, 575))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+###################################### QUIT #####################################
+
+Menu()
+
+pygame.quit()
