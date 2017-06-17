@@ -1,0 +1,217 @@
+import pygame, random
+
+##################################### FLAGS #####################################
+
+menu = True
+about = False
+selection = False
+
+################################### CONSTANTS ###################################
+
+
+
+##################################### SCREEN ####################################
+
+pygame.init()
+
+ScreenWidth = 900
+ScreenHeight = 650
+
+Screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+pygame.display.set_caption("Goalkeeper")
+Clock = pygame.time.Clock()
+
+##################################### IMAGES ####################################
+
+### Screen Images ###
+Menu_Background = pygame.image.load("Menu_Background.png")
+Menu_Background = pygame.transform.scale(Menu_Background, (ScreenWidth, ScreenHeight))
+About_Background = pygame.image.load("About_Background.png")
+About_Background = pygame.transform.scale(About_Background, (ScreenWidth, ScreenHeight))
+Start_Button_Off = pygame.image.load("Start_Button_Off.png")
+Start_Button_On = pygame.image.load("Start_Button_On.png")
+About_Button_Off = pygame.image.load("About_Button_Off.png")
+About_Button_On = pygame.image.load("About_Button_On.png")
+Menu_Button_Off = pygame.image.load("Menu_Button_Off.png")
+Menu_Button_On = pygame.image.load("Menu_Button_On.png")
+Selection_Background = pygame.image.load("Selection_Background.png")
+Selection_Background = pygame.transform.scale(Selection_Background, (ScreenWidth, ScreenHeight))
+
+### Teams ###
+Bayern_Munchen_Logo = pygame.image.load("Bayern_Munchen_Logo.png")
+Bayern_Munchen_Logo = pygame.transform.scale(Bayern_Munchen_Logo, (200, 200))
+Borussia_Dortmund_Logo = pygame.image.load("Borussia_Dortmund_Logo.png")
+Borussia_Dortmund_Logo = pygame.transform.scale(Borussia_Dortmund_Logo, (200, 200))
+Real_Madrid_Logo = pygame.image.load("Real_Madrid_Logo.png")
+Real_Madrid_Logo = pygame.transform.scale(Real_Madrid_Logo, (200, 200))
+
+### Characters ###
+Neuer_Card = pygame.image.load("Manuel_Neuer.png")
+Neuer_Card = pygame.transform.scale(Neuer_Card, (150, 235))
+Starke_Card = pygame.image.load("Tom_Starke.png")
+Starke_Card = pygame.transform.scale(Starke_Card, (150, 235))
+
+Robben_Card = pygame.image.load("Arjen_Robben.png")
+Robben_Card = pygame.transform.scale(Robben_Card, (300, 235))
+Muller_Card = pygame.image.load("Thomas_Muller.png")
+Muller_Card = pygame.transform.scale(Muller_Card, (300, 235))
+
+###################################### MENU #####################################
+
+def Menu():
+    global menu, about, selection, Player_1, Player_2
+    while menu:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu = False
+                pygame.quit()
+
+        Screen.blit(Menu_Background, (0, 0))
+        ### Buttons ###
+        if 40 < Mouse[0] < 40 + Start_Button_Off.get_rect().width and 75 < Mouse[1] < 75 + Start_Button_Off.get_rect().height:
+            Screen.blit(Start_Button_On, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+            if Click[0] == 1:
+                menu = False
+                selection = True
+                Player_1 = Player()
+                Player_2 = Player()
+                Selection_Screen()
+        elif 40 < Mouse[0] < 40 + About_Button_Off.get_rect().width and 175 < Mouse[1] <  175 + About_Button_Off.get_rect().height:
+            Screen.blit(About_Button_On, (40, 175))
+            Screen.blit(Start_Button_Off, (40, 75))
+            if Click[0] == 1:
+                menu = False
+                about = True
+                About()
+        else:
+            Screen.blit(Start_Button_Off, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+##################################### ABOUT #####################################
+
+def About():
+    global menu, about, selection
+    while about:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                about = False
+                pygame.quit()
+
+        Screen.blit(About_Background, (0, 0))
+        ### Back to Menu Button ###
+        if 775 < Mouse[0] < 775 + Menu_Button_Off.get_rect().width and 575 < Mouse[1] < 575 + Menu_Button_Off.get_rect().height:
+            Screen.blit(Menu_Button_On, (775, 575))
+            if Click[0] == 1:
+                menu = True
+                about = False
+                Menu()
+        else:
+            Screen.blit(Menu_Button_Off, (775, 575))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+################################# TEAM SELECTION ################################
+
+def Selection_Screen():
+    global menu, about, selection, Player_1, Player_2
+    font = pygame.font.SysFont("Lucida Handwriting", 35)
+    choice = 0
+    Bayern = True
+    Borussia = True
+    Real = True
+    Players = [Player_1, Player_2]
+
+    Text = font.render("Team Selection", True, (0, 0, 0))
+    while selection:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                selection = False
+                pygame.quit()
+
+        Screen.blit(Selection_Background, (0, 0))
+        ### Choose Team ###
+        if Player_2.Team == None and choice == 0:
+            Screen.blit(Text, (50, 50))
+            if Player_1.Team == None:
+                if Bayern:
+                    Screen.blit(Bayern_Munchen_Logo, (75, ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2))
+                if Borussia:
+                    Screen.blit(Borussia_Dortmund_Logo, (350, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if Real:
+                    Screen.blit(Real_Madrid_Logo, (625, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if 75 < Mouse[0] < 75 + Bayern_Munchen_Logo.get_rect().width and ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Bayern_Munchen_Logo.get_rect().height/2 and Bayern:
+                    if Click[0] == 1:
+                        Bayern = False
+                        Player_1.Team = 0
+                if 350 < Mouse[0] < 350 + Borussia_Dortmund_Logo.get_rect().width and ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Borussia_Dortmund_Logo.get_rect().height/2 and Borussia:
+                    if Click[0] == 1:
+                        Borussia = False
+                        Player_1.Team = 1
+                if 625 < Mouse[0] < 625 + Real_Madrid_Logo.get_rect().width and ScreenHeight/2 - Real_Madrid_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Real_Madrid_Logo.get_rect().height/2 and Real:
+                    if Click[0] == 1:
+                        Real = False
+                        Player_1.Team = 2
+            else:
+                if Bayern:
+                    Screen.blit(Bayern_Munchen_Logo, (75, ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2))
+                if Borussia:
+                    Screen.blit(Borussia_Dortmund_Logo, (350, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if Real:
+                    Screen.blit(Real_Madrid_Logo, (625, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if 75 < Mouse[0] < 75 + Bayern_Munchen_Logo.get_rect().width and ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Bayern_Munchen_Logo.get_rect().height/2 and Bayern:
+                    if Click[0] == 1:
+                        Bayern = False
+                        Real = False
+                        Borussia = False
+                        Player_2.Team = 0
+                        choice += 1
+                if 350 < Mouse[0] < 350 + Borussia_Dortmund_Logo.get_rect().width and ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Borussia_Dortmund_Logo.get_rect().height/2 and Borussia:
+                    if Click[0] == 1:
+                        Borussia = False
+                        Real = False
+                        Bayern = False
+                        Player_2.Team = 1
+                        choice += 1
+                if 625 < Mouse[0] < 625 + Real_Madrid_Logo.get_rect().width and ScreenHeight/2 - Real_Madrid_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Real_Madrid_Logo.get_rect().height/2 and Real:
+                    if Click[0] == 1:
+                        Real = False
+                        Borussia = False
+                        Bayern = False
+                        Player_2.Team = 2
+                        choice += 1
+        
+        if Player_2.Goalkeeper == None and choice == 1:
+            if Player_1.Goalkeeper == None:
+                if Player_1.Team == 0:
+                    Screen.blit(Neuer_Card, (ScreenWidth/3 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Starke_Card, (ScreenWidth*2/3 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+#################################### PLAYERS ####################################
+
+class Player():
+    def __init__(self):
+        self.Team = None
+        self.Goalkeeper = None
+        self.Shooter_1 = None
+        self.Shooter_2 = None
+        self.Shooter_3 = None
+
+###################################### QUIT #####################################
+
+Menu()
+
+pygame.quit()
