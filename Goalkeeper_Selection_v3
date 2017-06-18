@@ -401,7 +401,7 @@ def Selection_Screen():
                     for Shooter in BM_Shooters:
                         if not Player_1.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_1 = pos
                         pos += 1
                 if Player_1.Team == 1:
                     Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
@@ -409,7 +409,7 @@ def Selection_Screen():
                     for Shooter in BD_Shooters:
                         if not Player_1.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_1 = pos
                         pos += 1
                 if Player_1.Team == 2:
                     Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
@@ -417,35 +417,35 @@ def Selection_Screen():
                     for Shooter in RM_Shooters:
                         if not Player_1.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_1 = pos
                         pos += 1
                 if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 0:
+                        if not choosen_1 == 0:
                             Player_1.Shooter_2 = 0
                 if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 1:
+                        if not choosen_1 == 1:
                             Player_1.Shooter_2 = 1
                 if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 2:
+                        if not choosen_1 == 2:
                             Player_1.Shooter_2 = 2
                 if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 3:
+                        if not choosen_1 == 3:
                             Player_1.Shooter_2 = 3
                 if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 4:
+                        if not choosen_1 == 4:
                             Player_1.Shooter_2 = 4
                 if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 5:
+                        if not choosen_1 == 5:
                             Player_1.Shooter_2 = 5
                 if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 6:
+                        if not choosen_1 == 6:
                             Player_1.Shooter_2 = 6
             else:
                 if Player_2.Team == 0:
@@ -454,7 +454,7 @@ def Selection_Screen():
                     for Shooter in BM_Shooters:
                         if not Player_2.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_2 = pos
                         pos += 1
                 if Player_2.Team == 1:
                     Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
@@ -462,7 +462,7 @@ def Selection_Screen():
                     for Shooter in BD_Shooters:
                         if not Player_2.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_2 = pos
                         pos += 1
                 if Player_2.Team == 2:
                     Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
@@ -470,38 +470,38 @@ def Selection_Screen():
                     for Shooter in RM_Shooters:
                         if not Player_2.Shooter_1 == pos:
                             Screen.blit(Shooter, Positions[pos])
-                            choosen = pos
+                            choosen_2 = pos
                         pos += 1
                 if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 0:
+                        if not choosen_2 == 0:
                             Player_2.Shooter_2 = 0
                 if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 1:
+                        if not choosen_2 == 1:
                             Player_2.Shooter_2 = 1
                 if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 2:
+                        if not choosen_2 == 2:
                             Player_2.Shooter_2 = 2
                 if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 3:
+                        if not choosen_2 == 3:
                             Player_2.Shooter_2 = 3
                 if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 4:
+                        if not choosen_2 == 4:
                             Player_2.Shooter_2 = 4
                 if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 5:
+                        if not choosen_2 == 5:
                             Player_2.Shooter_2 = 5
                 if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
                     if Click[0] == 1:
-                        if not choosen == 6:
+                        if not choosen_2 == 6:
                             Player_2.Shooter_2 = 6
 
-        print(Player_1.Team, Player_2.Team, Player_1.Goalkeeper, Player_2.Goalkeeper, Player_1.Shooter_1, Player_1.Shooter_1, Player_2.Shooter_2)
+        print(Player_1.Team, Player_2.Team, Player_1.Goalkeeper, Player_2.Goalkeeper, Player_1.Shooter_1, Player_2.Shooter_1, Player_1.Shooter_2, Player_2.Shooter_2)
         pygame.display.update()
         Clock.tick(64)
 
