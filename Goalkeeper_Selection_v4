@@ -1,0 +1,685 @@
+import pygame, random, time
+
+##################################### FLAGS #####################################
+
+menu = True
+about = False
+selection = False
+
+###################################### CLASS ####################################
+
+class Player():
+    def __init__(self):
+        self.Team = None
+        self.Goalkeeper = None
+        self.Shooter_1 = None
+        self.Shooter_2 = None
+        self.Shooter_3 = None
+
+##################################### SCREEN ####################################
+
+pygame.init()
+
+ScreenWidth = 900
+ScreenHeight = 650
+
+Screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+pygame.display.set_caption("Goalkeeper")
+Clock = pygame.time.Clock()
+
+##################################### IMAGES ####################################
+
+### Screen Images ###
+Menu_Background = pygame.image.load("Menu_Background.png")
+Menu_Background = pygame.transform.scale(Menu_Background, (ScreenWidth, ScreenHeight))
+About_Background = pygame.image.load("About_Background.png")
+About_Background = pygame.transform.scale(About_Background, (ScreenWidth, ScreenHeight))
+Start_Button_Off = pygame.image.load("Start_Button_Off.png")
+Start_Button_On = pygame.image.load("Start_Button_On.png")
+About_Button_Off = pygame.image.load("About_Button_Off.png")
+About_Button_On = pygame.image.load("About_Button_On.png")
+Menu_Button_Off = pygame.image.load("Menu_Button_Off.png")
+Menu_Button_On = pygame.image.load("Menu_Button_On.png")
+Selection_Background = pygame.image.load("Selection_Background.png")
+Selection_Background = pygame.transform.scale(Selection_Background, (ScreenWidth, ScreenHeight))
+Logo_TEC = pygame.image.load("Logo_TEC.png")
+Logo_TEC = pygame.transform.scale(Logo_TEC, (200, 50))
+
+### Teams ###
+Bayern_Munchen_Logo = pygame.image.load("Bayern_Munchen_Logo.png")
+Bayern_Munchen_Logo = pygame.transform.scale(Bayern_Munchen_Logo, (200, 200))
+Borussia_Dortmund_Logo = pygame.image.load("Borussia_Dortmund_Logo.png")
+Borussia_Dortmund_Logo = pygame.transform.scale(Borussia_Dortmund_Logo, (200, 200))
+Real_Madrid_Logo = pygame.image.load("Real_Madrid_Logo.png")
+Real_Madrid_Logo = pygame.transform.scale(Real_Madrid_Logo, (200, 200))
+
+### Futbol Players ###
+#- Bayern Munchen -#
+Neuer_Card = pygame.image.load("Manuel_Neuer.png")
+Neuer_Card = pygame.transform.scale(Neuer_Card, (150, 235))
+Starke_Card = pygame.image.load("Tom_Starke.png")
+Starke_Card = pygame.transform.scale(Starke_Card, (150, 235))
+Ulreich_Card = pygame.image.load("Sven_Ulreich.png")
+Ulreich_Card = pygame.transform.scale(Ulreich_Card, (150, 235))
+
+Robben_Card = pygame.image.load("Arjen_Robben.png")
+Robben_Card = pygame.transform.scale(Robben_Card, (150, 235))
+Muller_Card = pygame.image.load("Thomas_Muller.png")
+Muller_Card = pygame.transform.scale(Muller_Card, (150, 235))
+Lewandowski_Card = pygame.image.load("Robert_Lewandowski.png")
+Lewandowski_Card = pygame.transform.scale(Lewandowski_Card, (150, 235))
+Lahm_Card = pygame.image.load("Phillip_Lahm.png")
+Lahm_Card = pygame.transform.scale(Lahm_Card, (150, 235))
+Gotze_Card = pygame.image.load("Mario_Gotze.png")
+Gotze_Card = pygame.transform.scale(Gotze_Card, (150, 235))
+Vidal_Card = pygame.image.load("Arturo_Vidal.png")
+Vidal_Card = pygame.transform.scale(Vidal_Card, (150, 235))
+Ribery_Card = pygame.image.load("Franck_Ribery.png")
+Ribery_Card = pygame.transform.scale(Ribery_Card, (150, 235))
+
+BM_Shooters = [Robben_Card, Muller_Card, Lewandowski_Card, Lahm_Card, Gotze_Card, Vidal_Card, Ribery_Card]
+
+#- Borussia Dortmund -#
+Burki_Card = pygame.image.load("Roman_Burki.png")
+Burki_Card = pygame.transform.scale(Burki_Card, (150, 235))
+Weidenfeller_Card = pygame.image.load("Roman_Weidenfeller.png")
+Weidenfeller_Card = pygame.transform.scale(Weidenfeller_Card, (150, 235))
+Bonmann_Card = pygame.image.load("Hendrik_Bonmann.png")
+Bonmann_Card = pygame.transform.scale(Bonmann_Card, (150, 235))
+
+Reus_Card = pygame.image.load("Marco_Reus.png")
+Reus_Card = pygame.transform.scale(Reus_Card, (150, 235))
+Mor_Card = pygame.image.load("Emre_Mor.png")
+Mor_Card = pygame.transform.scale(Mor_Card, (150, 235))
+Schurrle_Card = pygame.image.load("Andre_Schurrle.png")
+Schurrle_Card = pygame.transform.scale(Schurrle_Card, (150, 235))
+Aubameyang_Card = pygame.image.load("Pierre_Emerick_Aubameyang.png")
+Aubameyang_Card = pygame.transform.scale(Aubameyang_Card, (150, 235))
+Subotic_Card = pygame.image.load("Neven_Subotic.png")
+Subotic_Card = pygame.transform.scale(Subotic_Card, (150, 235))
+Dembele_Card = pygame.image.load("Ousmane_Dembele.png")
+Dembele_Card = pygame.transform.scale(Dembele_Card, (150, 235))
+Hummels_Card = pygame.image.load("Mats_Hummels.png")
+Hummels_Card = pygame.transform.scale(Hummels_Card, (150, 235))
+
+BD_Shooters = [Reus_Card, Mor_Card, Schurrle_Card, Aubameyang_Card, Subotic_Card, Dembele_Card, Hummels_Card]
+
+#- Real Madrid - #
+Navas_Card = pygame.image.load("Keylor_Navas.png")
+Navas_Card = pygame.transform.scale(Navas_Card, (150, 235))
+Casilla_Card = pygame.image.load("Kiko_Casilla.png")
+Casilla_Card = pygame.transform.scale(Casilla_Card, (150, 235))
+Yanez_Card = pygame.image.load("Ruben_Yanez.png")
+Yanez_Card = pygame.transform.scale(Yanez_Card, (150, 235))
+
+Ramos_Card = pygame.image.load("Sergio_Ramos.png")
+Ramos_Card = pygame.transform.scale(Ramos_Card, (150, 235))
+Benzema_Card = pygame.image.load("Karim_Benzema.png")
+Benzema_Card = pygame.transform.scale(Benzema_Card, (150, 235))
+Ronaldo_Card = pygame.image.load("Cristiano_Ronaldo.png")
+Ronaldo_Card = pygame.transform.scale(Ronaldo_Card, (150, 235))
+Bale_Card = pygame.image.load("Gareth_Bale.png")
+Bale_Card = pygame.transform.scale(Bale_Card, (150, 235))
+Rodriguez_Card = pygame.image.load("James_Rodriguez.png")
+Rodriguez_Card = pygame.transform.scale(Rodriguez_Card, (150, 235))
+Modric_Card = pygame.image.load("Luka_Modric.png")
+Modric_Card = pygame.transform.scale(Modric_Card, (150, 235))
+Varane_Card = pygame.image.load("Raphael_Varane.png")
+Varane_Card = pygame.transform.scale(Varane_Card, (150, 235))
+
+RM_Shooters = [Ramos_Card, Benzema_Card, Ronaldo_Card, Bale_Card, Rodriguez_Card, Modric_Card, Varane_Card]
+
+###################################### MENU #####################################
+
+def Menu():
+    global menu, about, selection, Player_1, Player_2
+    while menu:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu = False
+                pygame.quit()
+
+        Screen.blit(Menu_Background, (0, 0))
+        ### Buttons ###
+        if 40 < Mouse[0] < 40 + Start_Button_Off.get_rect().width and 75 < Mouse[1] < 75 + Start_Button_Off.get_rect().height:
+            Screen.blit(Start_Button_On, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+            if Click[0] == 1:
+                menu = False
+                selection = True
+                Player_1 = Player()
+                Player_2 = Player()
+                Selection_Screen()
+        elif 40 < Mouse[0] < 40 + About_Button_Off.get_rect().width and 175 < Mouse[1] <  175 + About_Button_Off.get_rect().height:
+            Screen.blit(About_Button_On, (40, 175))
+            Screen.blit(Start_Button_Off, (40, 75))
+            if Click[0] == 1:
+                menu = False
+                about = True
+                About()
+        else:
+            Screen.blit(Start_Button_Off, (40, 75))
+            Screen.blit(About_Button_Off, (40, 175))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+##################################### ABOUT #####################################
+
+def About():
+    global menu, about, selection
+    while about:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                about = False
+                pygame.quit()
+
+        Screen.blit(About_Background, (0, 0))
+        # Screen.blit(Logo_TEC, (50, 50))
+        ### Back to Menu Button ###
+        if 675 < Mouse[0] < 675 + Menu_Button_Off.get_rect().width and 575 < Mouse[1] < 575 + Menu_Button_Off.get_rect().height:
+            Screen.blit(Menu_Button_On, (675, 575))
+            if Click[0] == 1:
+                menu = True
+                about = False
+                Menu()
+        else:
+            Screen.blit(Menu_Button_Off, (675, 575))
+
+        pygame.display.update()
+        Clock.tick(64)
+
+################################# TEAM SELECTION ################################
+
+def Selection_Screen():
+    global menu, about, selection, Player_1, Player_2
+    choice = 0
+    Bayern = True
+    Borussia = True
+    Real = True
+    Players = [Player_1, Player_2]
+    while selection:
+        Mouse = pygame.mouse.get_pos()
+        Click = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                selection = False
+                pygame.quit()
+
+        Screen.blit(Selection_Background, (0, 0))
+        ### Choose Team ###
+        if Player_2.Team == None and choice == 0:
+            if Player_1.Team == None:
+                if Bayern:
+                    Screen.blit(Bayern_Munchen_Logo, (75, ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2))
+                if Borussia:
+                    Screen.blit(Borussia_Dortmund_Logo, (350, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if Real:
+                    Screen.blit(Real_Madrid_Logo, (625, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if 75 < Mouse[0] < 75 + Bayern_Munchen_Logo.get_rect().width and ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Bayern_Munchen_Logo.get_rect().height/2 and Bayern:
+                    if Click[0] == 1:
+                        Bayern = False
+                        Player_1.Team = 0
+                if 350 < Mouse[0] < 350 + Borussia_Dortmund_Logo.get_rect().width and ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Borussia_Dortmund_Logo.get_rect().height/2 and Borussia:
+                    if Click[0] == 1:
+                        Borussia = False
+                        Player_1.Team = 1
+                if 625 < Mouse[0] < 625 + Real_Madrid_Logo.get_rect().width and ScreenHeight/2 - Real_Madrid_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Real_Madrid_Logo.get_rect().height/2 and Real:
+                    if Click[0] == 1:
+                        Real = False
+                        Player_1.Team = 2
+            else:
+                if Bayern:
+                    Screen.blit(Bayern_Munchen_Logo, (75, ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2))
+                if Borussia:
+                    Screen.blit(Borussia_Dortmund_Logo, (350, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if Real:
+                    Screen.blit(Real_Madrid_Logo, (625, ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2))
+                if 75 < Mouse[0] < 75 + Bayern_Munchen_Logo.get_rect().width and ScreenHeight/2 - Bayern_Munchen_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Bayern_Munchen_Logo.get_rect().height/2 and Bayern:
+                    if Click[0] == 1:
+                        Bayern = False
+                        Real = False
+                        Borussia = False
+                        Player_2.Team = 0
+                        time.sleep(1.5)
+                        choice += 1
+                if 350 < Mouse[0] < 350 + Borussia_Dortmund_Logo.get_rect().width and ScreenHeight/2 - Borussia_Dortmund_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Borussia_Dortmund_Logo.get_rect().height/2 and Borussia:
+                    if Click[0] == 1:
+                        Borussia = False
+                        Real = False
+                        Bayern = False
+                        Player_2.Team = 1
+                        time.sleep(1.5)
+                        choice += 1
+                if 625 < Mouse[0] < 625 + Real_Madrid_Logo.get_rect().width and ScreenHeight/2 - Real_Madrid_Logo.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Real_Madrid_Logo.get_rect().height/2 and Real:
+                    if Click[0] == 1:
+                        Real = False
+                        Borussia = False
+                        Bayern = False
+                        Player_2.Team = 2
+                        time.sleep(1.5)
+                        choice += 1
+        ### Goalkeeper ###
+        if Player_2.Goalkeeper == None and choice == 1:
+            if Player_1.Goalkeeper == None:
+                if Player_1.Team == 0:
+                    Screen.blit(Neuer_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Starke_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Ulreich_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if Player_1.Team == 1:
+                    Screen.blit(Burki_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Weidenfeller_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Bonmann_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if Player_1.Team == 2:
+                    Screen.blit(Navas_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Casilla_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Yanez_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if ScreenWidth/4 - Neuer_Card.get_rect().width/2 < Mouse[0] < ScreenWidth/4 + Neuer_Card.get_rect().width/2 and ScreenHeight/2 - Neuer_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Neuer_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_1.Goalkeeper = 0
+                if ScreenWidth*2/4 - Starke_Card.get_rect().width/2 < Mouse[0] < ScreenWidth*2/4 + Starke_Card.get_rect().width/2 and ScreenHeight/2 - Starke_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Starke_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_1.Goalkeeper = 1
+                if ScreenWidth*3/4 - Ulreich_Card.get_rect().width/2 < Mouse[0] < ScreenWidth*3/4 + Ulreich_Card.get_rect().width/2 and ScreenHeight/2 - Ulreich_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Ulreich_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_1.Goalkeeper = 2
+            else:
+                if Player_2.Team == 0:
+                    Screen.blit(Neuer_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Starke_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Ulreich_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if Player_2.Team == 1:
+                    Screen.blit(Burki_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Weidenfeller_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Bonmann_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if Player_2.Team == 2:
+                    Screen.blit(Navas_Card, (ScreenWidth/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                    Screen.blit(Casilla_Card, (ScreenWidth*2/4 - Starke_Card.get_rect().width/2, ScreenHeight/2 - Starke_Card.get_rect().height/2))
+                    Screen.blit(Yanez_Card, (ScreenWidth*3/4 - Neuer_Card.get_rect().width/2, ScreenHeight/2 - Neuer_Card.get_rect().height/2))
+                if ScreenWidth/4 - Neuer_Card.get_rect().width/2 < Mouse[0] < ScreenWidth/4 + Neuer_Card.get_rect().width/2 and ScreenHeight/2 - Neuer_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Neuer_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_2.Goalkeeper = 0
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*2/4 - Starke_Card.get_rect().width/2 < Mouse[0] < ScreenWidth*2/4 + Starke_Card.get_rect().width/2 and ScreenHeight/2 - Starke_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Starke_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_2.Goalkeeper = 1
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*3/4 - Ulreich_Card.get_rect().width/2 < Mouse[0] < ScreenWidth*3/4 + Ulreich_Card.get_rect().width/2 and ScreenHeight/2 - Ulreich_Card.get_rect().height/2 < Mouse[1] < ScreenHeight/2 + Ulreich_Card.get_rect().height/2:
+                    if Click[0] == 1:
+                        Player_2.Goalkeeper = 2
+                        time.sleep(1.5)
+                        choice += 1
+        ### First Shooter ###
+        if Player_2.Shooter_1 == None and choice == 2:
+            if Player_1.Shooter_1 == None:
+                if Player_1.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if Player_1.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if Player_1.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 0
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 2
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 3
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 4
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 5
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_1.Shooter_1 = 6
+            else:
+                if Player_2.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if Player_2.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if Player_2.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        Screen.blit(Shooter, Positions[pos])
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 0
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1: 
+                        Player_2.Shooter_1 = 1
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 2
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 3
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 4
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 5
+                        time.sleep(1.5)
+                        choice += 1
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        Player_2.Shooter_1 = 6
+                        time.sleep(1.5)
+                        choice += 1
+
+        ### Second Shooter ###
+        if Player_2.Shooter_2 == None and choice == 3:
+            if Player_1.Shooter_2 == None:
+                if Player_1.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        if not Player_1.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_1 = pos
+                        pos += 1
+                if Player_1.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        if not Player_1.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_1 = pos
+                        pos += 1
+                if Player_1.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        if not Player_1.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_1 = pos
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        time.sleep(5)
+                        if not choosen_1 == 0:
+                            Player_1.Shooter_2 = 0
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        time.sleep(5)
+                        if not choosen_1 == 1:
+                            Player_1.Shooter_2 = 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 2:
+                            Player_1.Shooter_2 = 2
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 3:
+                            Player_1.Shooter_2 = 3
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 4:
+                            Player_1.Shooter_2 = 4
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 5:
+                            Player_1.Shooter_2 = 5
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 6:
+                            Player_1.Shooter_2 = 6
+            else:
+                if Player_2.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        if not Player_2.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_2 = pos
+                        pos += 1
+                if Player_2.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        if not Player_2.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_2 = pos
+                        pos += 1
+                if Player_2.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        if not Player_2.Shooter_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_2 = pos
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        time.sleep(5)
+                        if not choosen_2 == 0:
+                            Player_2.Shooter_2 = 0
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        time.sleep(5)
+                        if not choosen_2 == 1:
+                            Player_2.Shooter_2 = 1
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 2:
+                            Player_2.Shooter_2 = 2
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 3:
+                            Player_2.Shooter_2 = 3
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 4:
+                            Player_2.Shooter_2 = 4
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 5:
+                            Player_2.Shooter_2 = 5
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 6:
+                            Player_2.Shooter_2 = 6
+                            time.sleep(1.5)
+                            choice += 1
+        
+        ### Third Shooter ###
+        if Player_2.Shooter_3 == None and choice == 4:
+            if Player_1.Shooter_3 == None:
+                if Player_1.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        if not Player_1.Shooter_1 == pos or not choosen_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_3 = pos
+                        pos += 1
+                if Player_1.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        if not Player_1.Shooter_1 == pos or not choosen_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_3 = pos
+                        pos += 1
+                if Player_1.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        if not Player_1.Shooter_1 == pos or not choosen_1 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_3 = pos
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 0 and not choosen_3 == 0:
+                            Player_1.Shooter_3 = 0
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 1 and not choosen_3 == 1:
+                            Player_1.Shooter_3 = 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 2 and not choosen_3 == 2:
+                            Player_1.Shooter_3 = 2
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 3 and not choosen_3 == 3:
+                            Player_1.Shooter_3 = 3
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 4 and not choosen_3 == 4:
+                            Player_1.Shooter_3 = 4
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 5 and not choosen_3 == 5:
+                            Player_1.Shooter_3 = 5
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_1 == 6 and not choosen_3 == 6:
+                            Player_1.Shooter_3 = 6
+            else:
+                if Player_2.Team == 0:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BM_Shooters:
+                        if not Player_2.Shooter_1 == pos or not choosen_2 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_4 = pos
+                        pos += 1
+                if Player_2.Team == 1:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in BD_Shooters:
+                        if not Player_2.Shooter_1 == pos or not choosen_2 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_4 = pos
+                        pos += 1
+                if Player_2.Team == 2:
+                    Positions = [(ScreenWidth/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*2/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*3/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth*4/5 - 75, ScreenHeight/4 - 235/2), (ScreenWidth/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*2/4 - 75, ScreenHeight*3/4 - 235/2), (ScreenWidth*3/4 - 75, ScreenHeight*3/4 - 235/2)]
+                    pos = 0
+                    for Shooter in RM_Shooters:
+                        if not Player_2.Shooter_1 == pos  not choosen_2 == pos:
+                            Screen.blit(Shooter, Positions[pos])
+                        else:
+                            choosen_4 = pos
+                        pos += 1
+                if ScreenWidth/5 - 75 < Mouse[0] < ScreenWidth/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 0:
+                            Player_2.Shooter_3 = 0
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*2/5 - 75 < Mouse[0] < ScreenWidth*2/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 1:
+                            Player_2.Shooter_3 = 1
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*3/5 - 75 < Mouse[0] < ScreenWidth*3/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 2:
+                            Player_2.Shooter_3 = 2
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*4/5 - 75 < Mouse[0] < ScreenWidth*4/5 + 75 and ScreenHeight/4 - 235/2 < Mouse[1] < ScreenHeight/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 3:
+                            Player_2.Shooter_3 = 3
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth/4 - 75 < Mouse[0] < ScreenWidth/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 4:
+                            Player_2.Shooter_3 = 4
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*2/4 - 75 < Mouse[0] < ScreenWidth*2/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 5:
+                            Player_2.Shooter_3 = 5
+                            time.sleep(1.5)
+                            choice += 1
+                if ScreenWidth*3/4 - 75 < Mouse[0] < ScreenWidth*3/4 + 75 and ScreenHeight*3/4 - 235/2 < Mouse[1] < ScreenHeight*3/4 + 235/2:
+                    if Click[0] == 1:
+                        if not choosen_2 == 6:
+                            Player_2.Shooter_3 = 6
+                            time.sleep(1.5)
+                            choice += 1
+                            
+        print(Player_1.Team, Player_2.Team, Player_1.Goalkeeper, Player_2.Goalkeeper, Player_1.Shooter_1, Player_2.Shooter_1, Player_1.Shooter_2, Player_2.Shooter_2)
+        pygame.display.update()
+        Clock.tick(64)
+
+###################################### QUIT #####################################
+
+Menu()
+
+pygame.quit()
